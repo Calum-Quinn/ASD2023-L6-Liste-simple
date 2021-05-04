@@ -73,6 +73,7 @@ public:
 
     LSConstIterator& operator=(const LSIterator<T>& i) {
         m = i.m;
+        return *this; 
     }
 
     bool operator==(const LSConstIterator& i) {
