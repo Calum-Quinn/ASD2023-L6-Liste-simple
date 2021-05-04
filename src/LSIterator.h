@@ -6,11 +6,16 @@
 template <typename T> class ListeSimple;
 
 template<typename T>
+class LSConstIterator;
+
+template<typename T>
 class LSIterator
         : public std::iterator <std::forward_iterator_tag,T>
 {
     friend class ListeSimple<T>;
     using Maillon = typename ListeSimple<T>::Maillon;
+
+    friend class LSConstIterator<T>;
 
     Maillon* m;
     LSIterator(Maillon* _m) : m(_m) {}
@@ -73,7 +78,7 @@ public:
 
     LSConstIterator& operator=(const LSIterator<T>& i) {
         m = i.m;
-        return *this; 
+        return *this;
     }
 
     bool operator==(const LSConstIterator& i) {
