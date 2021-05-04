@@ -1,6 +1,9 @@
 # ASD L6 Liste simplement chaînée
 
 Cet exercice vous demande de compléter la classe `ListeSimple` pour qu'elle passe le double codecheck [https://codecheck.io/files/2105041405cm41umarebsawo43l643cpk68](https://codecheck.io/files/2105041405cm41umarebsawo43l643cpk68). 
+
+Alternativement, vous pouvez aussi passer celui-ci : [https://codecheck.io/files/21050415186vnmmv6ied2e3eb8h8xdrkpj1](https://codecheck.io/files/21050415186vnmmv6ied2e3eb8h8xdrkpj1). La différence entre les 2 réside dans l'absence de CP(-42) =(-42) =(-42) D(-42) dans cette version (il correspond au swap des membres avant_premier). Les 2 approches sont acceptées.  
+
 Le code source de cet exercice est disponible dans [src](./src), le résultat attendu dans [txt](./txt). Sauvez
 le fichier .zip généré par codecheck dans [zips](./zips). 
 
