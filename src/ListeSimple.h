@@ -38,10 +38,25 @@ public:
     // insert_after, erase_after, splice_after, push_front, pop_front,
     // swap, sort, ainsi que constructeur, opérateur d'affectation et destructeur
 
-    ListeSimple(const ListeSimple& other) : avant_premier(other.avant_premier) {}
+    //Constructeur par copie
+    ListeSimple(ListeSimple& autre) : ListeSimple() {
+       iterator iterateur = before_begin();
+       iterator itAutre = autre.begin();
+       while(itAutre != autre.end()) {
+          insert_after(iterateur, *itAutre);
+          ++iterateur;
+          ++itAutre;
+       }
+    }
 
-    ~ListeSimple();
+    //Destructeur
+    ~ListeSimple() {
+       while(avant_premier.suivant) {
+          erase_after(&avant_premier);
+       }
+    }
 
+    //Opérateur d'affectation
     ListeSimple& operator=(const ListeSimple& autre) {
        if (this != &autre) {
           return *this;
@@ -49,20 +64,16 @@ public:
     }
 
 
-    iterator end() noexcept{
-
-       Maillon actuel = avant_premier;
-
-       return actuel.valeur;
+    const_iterator end() const noexcept {
+       return cend();
     }
-    const_iterator cend() const noexcept{
-       Maillon actuel = avant_premier;
 
-       while(actuel.suivant != nullptr){
-          actuel = *actuel.suivant;
-       }
+    iterator end() noexcept {
+       return iterator(nullptr);
+    }
 
-       return (iterator)(&actuel);
+    const_iterator cend() const noexcept {
+       return const_iterator(nullptr);
     }
 
     iterator before_begin() {
@@ -77,13 +88,14 @@ public:
        return !avant_premier.suivant;
     }
 
-    value_type front(){
+    value_type front() const {
       return *begin();
     }
 
     void insert_after(iterator pos, value_type valeur) {
        Maillon* temp = pos.m->suivant;
-       pos.m->suivant = new Maillon(valeur);
+       pos.m->suivant = new Maillon;
+       pos.m->suivant->valeur = valeur;
        pos.m->suivant->suivant = temp;
     }
     /*fonction insérer_après(M,val)
@@ -92,17 +104,18 @@ public:
      */
 
     void erase_after(iterator pos) {
-      Maillon* temp = next(pos,2);
-      delete next(pos);
-      pos.suivant = temp;
+//      Maillon* temp = next(pos,2);
+      iterator temp = next(pos,2);
+      delete &(*next(pos));
+      next(pos) = temp;
     }
 
     void splice_after(iterator pos, iterator listeDebut, iterator listeFin) {
        if (listeDebut == listeFin)
           return;
 
-       listeFin->next = pos->next;
-       pos->next = listeDebut;
+       next(listeFin) = next(pos);
+       next(pos) = listeDebut;
     }
 
     void push_front(value_type i) {
