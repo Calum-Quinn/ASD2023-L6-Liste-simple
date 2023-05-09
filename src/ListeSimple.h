@@ -39,6 +39,21 @@ public:
     // insert_after, erase_after, splice_after, push_front, pop_front,
     // swap, sort, ainsi que constructeur, opérateur d'affectation et destructeur
 
+    ~ListeSimple();
+    ListeSimple& operator=(const ListeSimple& other);
+    value_type end();
+    value_type cend();
+    value_type before_begin();
+    value_type cbefore_begin();
+    bool empty();
+    value_type front();
+    void insert_after();
+    void erase_after();
+    void splice_after();
+    void push_front();
+    void pop_front();
+    void swap();
+    void sort();
 };
 
 #endif //LISTE_H
