@@ -3,4 +3,4 @@ project(ASD2022_L6)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(L7d-Splice main.cpp util.cpp)
+add_executable(L7d-Splice main.cpp util.cpp ListeSimple_impl.h)
