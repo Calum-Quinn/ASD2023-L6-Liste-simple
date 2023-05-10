@@ -39,9 +39,11 @@ public:
     // swap, sort, ainsi que constructeur, opérateur d'affectation et destructeur
 
     //Constructeur par copie
-    ListeSimple(ListeSimple& autre) : ListeSimple() {
+
+    ListeSimple(const ListeSimple& autre) : ListeSimple() {
        iterator iterateur = before_begin();
-       iterator itAutre = autre.begin();
+       const_iterator itAutre = autre.begin();
+
        while(itAutre != autre.end()) {
           insert_after(iterateur, *itAutre);
           ++iterateur;
@@ -57,12 +59,15 @@ public:
     }
 
     //Opérateur d'affectation
-    ListeSimple& operator=(const ListeSimple& autre) {
-       if (this != &autre) {
+    ListeSimple& operator=(const ListeSimple<value_type>& autre) {
+       if (this == &autre) {
           return *this;
        }
-    }
 
+		 ListeSimple<value_type> temp(autre);
+		 swap(temp);
+		 return *this;
+    }
 
     const_iterator end() const noexcept {
        return cend();
@@ -88,15 +93,21 @@ public:
        return !avant_premier.suivant;
     }
 
-    value_type front() const {
+    reference front() noexcept {
       return *begin();
     }
 
+	const_reference front() const noexcept {
+		return *cbegin();
+	}
+
     void insert_after(iterator pos, value_type valeur) {
-       Maillon* temp = pos.m->suivant;
-       pos.m->suivant = new Maillon;
-       pos.m->suivant->valeur = valeur;
-       pos.m->suivant->suivant = temp;
+		 if(pos.m){
+			 Maillon* temp = pos.m->suivant;
+			 pos.m->suivant = new Maillon;
+			 pos.m->suivant->valeur = valeur;
+			 pos.m->suivant->suivant = temp;
+		 }
     }
     /*fonction insérer_après(M,val)
  alerter si M == ⌀
@@ -105,9 +116,11 @@ public:
 
     void erase_after(iterator pos) {
 //      Maillon* temp = next(pos,2);
-      iterator temp = next(pos,2);
-      delete &(*next(pos));
-      next(pos) = temp;
+		if(pos.m && pos.m->suivant){
+			iterator temp = next(pos,2);
+			delete &(*next(pos));
+			next(pos) = temp;
+		}
     }
 
     void splice_after(iterator pos, iterator listeDebut, iterator listeFin) {
@@ -118,7 +131,7 @@ public:
        next(pos) = listeDebut;
     }
 
-    void push_front(value_type i) {
+    void push_front(const_reference i) {
        insert_after(before_begin(), i);
       // Maillon tmp;
        //tmp.valeur = i;
@@ -150,7 +163,10 @@ public:
    premier ← supprimer_au_début(premier)*/
     }
 
-    void swap();
+    void swap(ListeSimple& autre) noexcept {
+		 std::swap(avant_premier, autre.avant_premier);
+	 };
+
     void sort() {
       //Bubble, Selection ou insertion
       iterator plusPetit = before_begin();
