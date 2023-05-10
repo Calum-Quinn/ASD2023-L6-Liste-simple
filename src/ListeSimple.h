@@ -117,9 +117,9 @@ public:
     void erase_after(iterator pos) {
 //      Maillon* temp = next(pos,2);
 		if(pos.m && pos.m->suivant){
-			iterator temp = next(pos,2);
-			delete &(*next(pos));
-			next(pos) = temp;
+			Maillon* temp = pos.m->suivant;
+			pos.m->suivant = temp->suivant;
+			delete temp;
 		}
     }
 
@@ -127,8 +127,12 @@ public:
        if (listeDebut == listeFin)
           return;
 
-       next(listeFin) = next(pos);
-       next(pos) = listeDebut;
+		 listeDebut.m->suivant = listeFin.m->suivant;
+		 pos.m->suivant = listeDebut.m->suivant;
+		 listeFin.m->suivant = pos.m->suivant;
+
+		 //next(listeFin) = next(pos);
+      // next(pos) = listeDebut;
     }
 
     void push_front(const_reference i) {
