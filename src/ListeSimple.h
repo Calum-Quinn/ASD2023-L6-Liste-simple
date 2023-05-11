@@ -4,6 +4,9 @@
 #include "LSIterator.h"
 #include <utility> // std::swap;
 
+//A ENLEVER!!!!
+#include <iostream>
+
 template <typename T>
 class ListeSimple {
 public:
@@ -60,12 +63,15 @@ public:
 
     //Opérateur d'affectation
     ListeSimple& operator=(const ListeSimple<value_type>& autre) {
+       cout << "1" << endl;
        if (this == &autre) {
           return *this;
        }
-
+       cout << "2" << endl;
 		 ListeSimple<value_type> temp(autre);
+       cout << "3" << endl;
 		 swap(temp);
+       cout << "4" << endl;
 		 return *this;
     }
 
@@ -104,9 +110,9 @@ public:
     void insert_after(iterator pos, value_type valeur) {
 		 if(pos.m){
 			 Maillon* temp = pos.m->suivant;
-			 pos.m->suivant = new Maillon;
-			 pos.m->suivant->valeur = valeur;
-			 pos.m->suivant->suivant = temp;
+			 pos.m->suivant = new Maillon{valeur,temp};
+//			 pos.m->suivant->valeur = valeur;
+//			 pos.m->suivant->suivant = temp;
 		 }
     }
     /*fonction insérer_après(M,val)
@@ -127,44 +133,29 @@ public:
        if (listeDebut == listeFin)
           return;
 
-		 listeDebut.m->suivant = listeFin.m->suivant;
-		 pos.m->suivant = listeDebut.m->suivant;
-		 listeFin.m->suivant = pos.m->suivant;
+       iterator* temp = &avant_premier;
+       iterator tempAvant;
+       iterator tempFin;
 
-		 //next(listeFin) = next(pos);
-      // next(pos) = listeDebut;
+       while(temp != listeFin) {
+          if (temp.m->suivant == listeDebut)
+             tempAvant = temp;
+          if (temp.m->suivant == listeFin)
+             tempFin = temp;
+          next(temp);
+       }
+
+       tempFin.m->suivant = pos.m->suivant;
+       pos.m->suivant = listeDebut;
+       tempAvant.m->suivant = listeFin;
     }
 
     void push_front(const_reference i) {
        insert_after(before_begin(), i);
-      // Maillon tmp;
-       //tmp.valeur = i;
-       //tmp.suivant = avant_premier.suivant;
-       //avant_premier.suivant = &tmp;
-
-       /*
-        *
-        * fonction insérer_au_début(premier, valeur)
-    tmp ← nouveau Maillon
-    tmp.valeur ← valeur
-    tmp.suivant ← premier
-    retourner tmp
-        */
     }
 
     void pop_front() {
        erase_after(before_begin());
-
-       //Maillon tmp;
-       //tmp = avant_premier.suivant->suivant;
-       //avant_premier.suivant = &tmp;
-
-       /*fonction supprimer_au_début(premier)
-    alerter si premier == ⌀
-    tmp ← premier.suivant
-    effacer premier
-    retourner tmp
-   premier ← supprimer_au_début(premier)*/
     }
 
     void swap(ListeSimple& autre) noexcept {
@@ -172,21 +163,18 @@ public:
 	 }
 
     void sort() {
-      //Bubble, Selection ou insertion
-      iterator plusPetit = before_begin();
-       while(next(plusPetit,2) != end()){
-           iterator iMin = plusPetit;
-           iterator i = next(plusPetit);
+       //Bubble, Selection ou insertion
+       iterator plusPetit = before_begin();
+       iterator iMin;
 
-           while(next(i) != end()){
-              if(*i < *iMin){
-                 iMin = i;
-              }
-              ++i;
-           }
-
-          splice_after(plusPetit, iMin, iMin);
-          ++plusPetit;
+       for (iterator i = plusPetit.m->suivant; i != end(); ++i) {
+          iMin = i;
+          for (iterator j = i + 1; j != end(); ++j) {
+             if (j.m->valeur < iMin.m->valeur)
+                iMin = j;
+          }
+          splice_after(plusPetit, iMin, iMin.m->suivant);
+          next(plusPetit);
        }
     }
 };
