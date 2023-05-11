@@ -63,15 +63,11 @@ public:
 
     //Opérateur d'affectation
     ListeSimple& operator=(const ListeSimple<value_type>& autre) {
-       cout << "1" << endl;
        if (this == &autre) {
           return *this;
        }
-       cout << "2" << endl;
 		 ListeSimple<value_type> temp(autre);
-       cout << "3" << endl;
 		 swap(temp);
-       cout << "4" << endl;
 		 return *this;
     }
 
@@ -133,21 +129,47 @@ public:
        if (listeDebut == listeFin)
           return;
 
-       iterator* temp = &avant_premier;
-       iterator tempAvant;
-       iterator tempFin;
+       Maillon* tmp = pos.m->suivant;
+       pos.m->suivant = listeDebut.m->suivant;
+       listeDebut.m->suivant = listeFin.m->suivant;
+       listeFin.m->suivant = tmp;
 
-       while(temp != listeFin) {
-          if (temp.m->suivant == listeDebut)
-             tempAvant = temp;
-          if (temp.m->suivant == listeFin)
-             tempFin = temp;
-          next(temp);
-       }
+//       iterator temp = before_begin();
+//       iterator tempAvant;
+//       iterator tempFin;
+//
+//       while(temp != listeFin) {
+//          if (iterator(temp.m->suivant) == listeDebut)
+//             tempAvant = temp;
+//          if (iterator(temp.m->suivant) == listeFin)
+//             tempFin = temp;
+//         next(temp);
+//         ++temp;
+//       }
+//
+//       tempFin.m->suivant = pos.m->suivant;
+//       pos.m->suivant = listeDebut.m;
+//       tempAvant.m->suivant = listeFin.m;
 
-       tempFin.m->suivant = pos.m->suivant;
-       pos.m->suivant = listeDebut;
-       tempAvant.m->suivant = listeFin;
+       //Technique moche mais bg
+//       iterator  temp = listeDebut;
+//       iterator tempFin;
+//
+//       while(temp != listeFin) {
+//          if (iterator(temp.m->suivant) == listeFin)
+//             tempFin = temp;
+////          next(temp);
+//          temp = temp.m->suivant;
+//       }
+//
+//       //iterator tempDebut = listeDebut;
+//       Maillon tempDebut2 = *listeDebut.m;
+//
+//       listeDebut.m = listeFin.m;
+//
+//       tempFin.m->suivant = pos.m->suivant;
+//       pos.m->suivant = &tempDebut2;
+
     }
 
     void push_front(const_reference i) {
@@ -169,7 +191,7 @@ public:
 
        for (iterator i = plusPetit.m->suivant; i != end(); ++i) {
           iMin = i;
-          for (iterator j = i + 1; j != end(); ++j) {
+          for (iterator j = i.m->suivant; j != end(); ++j) {
              if (j.m->valeur < iMin.m->valeur)
                 iMin = j;
           }
