@@ -4,8 +4,7 @@
 #include "LSIterator.h"
 #include <utility> // std::swap;
 
-//A ENLEVER!!!!
-#include <iostream>
+
 
 template <typename T>
 class ListeSimple {
