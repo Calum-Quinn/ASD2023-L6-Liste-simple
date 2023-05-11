@@ -188,13 +188,14 @@ public:
        iterator plusPetit = before_begin();
        iterator iMin;
 
-       for (iterator i = plusPetit; i != end(); ++i) {
+       for (iterator i = plusPetit; iterator(i.m->suivant) != end(); ++i) {
           iMin = i;
           for (iterator j = next(i); j != end(); ++j) {
              if (j.m->suivant && j.m->suivant->valeur < iMin.m->suivant->valeur)
                 iMin = j;
           }
-          splice_after(plusPetit, iMin, next(iMin));
+          if (iMin != i)
+            splice_after(plusPetit, iMin, next(iMin));
           plusPetit = plusPetit.m->suivant;
        }
 
