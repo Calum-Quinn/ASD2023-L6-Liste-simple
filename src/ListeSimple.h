@@ -169,7 +169,7 @@ public:
 
     void swap(ListeSimple& autre) noexcept {
 		 std::swap(avant_premier, autre.avant_premier);
-	 };
+	 }
 
     void sort() {
       //Bubble, Selection ou insertion
