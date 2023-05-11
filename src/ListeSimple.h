@@ -41,7 +41,6 @@ public:
     // swap, sort, ainsi que constructeur, opérateur d'affectation et destructeur
 
     //Constructeur par copie
-
     ListeSimple(const ListeSimple& autre) : ListeSimple() {
        iterator iterateur = before_begin();
        const_iterator itAutre = autre.begin();
@@ -104,16 +103,9 @@ public:
 
     void insert_after(iterator pos, value_type valeur) {
 		 if(pos.m){
-			 Maillon* temp = pos.m->suivant;
-			 pos.m->suivant = new Maillon{valeur,temp};
-//			 pos.m->suivant->valeur = valeur;
-//			 pos.m->suivant->suivant = temp;
+          pos.m->suivant = std::move(new Maillon{valeur,pos.m->suivant});
 		 }
     }
-    /*fonction insérer_après(M,val)
- alerter si M == ⌀
- M.suivant ← nouveau Maillon(val,M.suivant)
-     */
 
     void erase_after(iterator pos) {
 //      Maillon* temp = next(pos,2);
@@ -132,43 +124,6 @@ public:
        pos.m->suivant = listeDebut.m->suivant;
        listeDebut.m->suivant = listeFin.m->suivant;
        listeFin.m->suivant = tmp;
-
-//       iterator temp = before_begin();
-//       iterator tempAvant;
-//       iterator tempFin;
-//
-//       while(temp != listeFin) {
-//          if (iterator(temp.m->suivant) == listeDebut)
-//             tempAvant = temp;
-//          if (iterator(temp.m->suivant) == listeFin)
-//             tempFin = temp;
-//         next(temp);
-//         ++temp;
-//       }
-//
-//       tempFin.m->suivant = pos.m->suivant;
-//       pos.m->suivant = listeDebut.m;
-//       tempAvant.m->suivant = listeFin.m;
-
-       //Technique moche mais bg
-//       iterator  temp = listeDebut;
-//       iterator tempFin;
-//
-//       while(temp != listeFin) {
-//          if (iterator(temp.m->suivant) == listeFin)
-//             tempFin = temp;
-////          next(temp);
-//          temp = temp.m->suivant;
-//       }
-//
-//       //iterator tempDebut = listeDebut;
-//       Maillon tempDebut2 = *listeDebut.m;
-//
-//       listeDebut.m = listeFin.m;
-//
-//       tempFin.m->suivant = pos.m->suivant;
-//       pos.m->suivant = &tempDebut2;
-
     }
 
     void push_front(const_reference i) {
@@ -198,17 +153,6 @@ public:
             splice_after(plusPetit, iMin, next(iMin));
           plusPetit = plusPetit.m->suivant;
        }
-
-//       for (iterator i = next(plusPetit); i != end(); ++i) {
-//         iMin = i;
-//          //for (iterator j = i.m->suivant; j != end(); ++j) {
-//          for (iterator j = next(i); j != end(); ++j) {
-//             if (j.m->valeur < iMin.m->valeur)
-//                iMin = j;
-//          }
-//          splice_after(plusPetit, iMin, next(iMin));
-//          next(plusPetit);
-//       }
     }
 };
 
