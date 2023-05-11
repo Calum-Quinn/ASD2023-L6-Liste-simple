@@ -195,7 +195,7 @@ public:
              if (j.m->valeur < iMin.m->valeur)
                 iMin = j;
           }
-          splice_after(plusPetit, iMin, iMin.m->suivant);
+          splice_after(plusPetit, iMin, next(iMin));
           next(plusPetit);
        }
     }
