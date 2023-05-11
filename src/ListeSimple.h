@@ -55,7 +55,8 @@ public:
     //Destructeur
     ~ListeSimple() {
        while(avant_premier.suivant) {
-          erase_after(&avant_premier);
+          //erase_after(&avant_premier);
+          pop_front();
        }
     }
 
